@@ -17,8 +17,10 @@ const main = async () => {
     await client.connect()
     const db = drizzle(client)
 
-    // Ensure categories exist before inserting products
-    await db.delete(schema.categories).execute()
+    await db.delete(schema.products)
+    await db.delete(schema.categories)
+    await db.delete(schema.accounts)
+    await db.delete(schema.users)
 
     // Insert categories
     const resCategories = await db
@@ -28,7 +30,6 @@ const main = async () => {
     console.log({ resCategories })
 
     // Delete existing products
-    await db.delete(schema.products).execute()
 
     // Insert products
     const resProducts = await db
@@ -36,6 +37,14 @@ const main = async () => {
       .values(sampleData.products)
       .returning()
     console.log({ resProducts })
+
+    // Delete existing data
+
+    const resUsers = await db
+      .insert(schema.users)
+      .values(sampleData.users)
+      .returning()
+    console.log({ resUsers, resProducts })
 
     await client.end()
   } catch (error) {
