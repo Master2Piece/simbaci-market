@@ -17,7 +17,7 @@ const ProductList = ({ title, data }: { title: string; data: Product[] }) => {
         </div>
       ) : (
         <div>
-          <p>No product found</p>
+          <p>Produk tidak ditemukan</p>
         </div>
       )}
     </section>

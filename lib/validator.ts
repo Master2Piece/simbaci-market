@@ -35,43 +35,42 @@ export const updateUserSchema = updateProfileSchema.extend({
 })
 
 export const insertProductSchema = createSelectSchema(products, {
-  images: z.array(z.string()).min(1, 'Produk harus memiliki minimal 1 gambar'),
-  stock: z.coerce.number().min(0, 'Stock must be at least 0'),
+  images: z.array(z.string()),
+  stock: z.coerce.number(),
 }).omit({
   id: true,
-  rating: true,
   createdAt: true,
 })
 
 export const updateProductSchema = createSelectSchema(products, {
-  images: z.array(z.string()).min(1, 'Produk harus memiliki minimal 1 gambar'),
-  stock: z.coerce.number().min(0, 'Stok minimal 0'),
+  images: z.array(z.string()),
+  stock: z.coerce.number(),
 }).omit({
-  rating: true,
   createdAt: true,
 })
 
 // CART
 export const cartItemSchema = z.object({
-  productId: z.string().min(1, 'Product is required'),
-  name: z.string().min(1, 'Name is required'),
-  slug: z.string().min(1, 'Slug is required'),
-  qty: z.number().int().nonnegative('Quantity must be a non-negative number'),
-  image: z.string().min(1, 'Image is required'),
+  productId: z.string().min(1, 'Produk id harus diisi'),
+  name: z.string().min(1, 'Nama produk harus diisi'),
+  slug: z.string().min(1, 'Slug harus diisi'),
+  qty: z.number().int().nonnegative('Kuantitas minimal 0'),
+  image: z.string().min(1, 'Gambar produk harus diisi'),
   price: z
     .number()
     .refine(
       (value) => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(value)),
-      'Price must have exactly two decimal places (e.g., 49.99)'
+      'Harga tidak valid'
     ),
 })
 
 export const shippingAddressSchema = z.object({
   fullName: z.string().min(3, 'Nama lengkap minimal 3 karakter'),
-  streetAddress: z.string().min(3, 'Alamat minimal 3 karakter'),
-  city: z.string().min(3, 'Kota minimal 3 karakter'),
-  postalCode: z.string().min(3, 'Kode pos minimal 3 karakter'),
-  shipmentMethod: z.enum(['Dikirim', 'Diambil']).default('Dikirim'),
+  streetAddress: z.string().optional(),
+  city: z.string().optional(),
+  postalCode: z.string().optional(),
+  phoneNumber: z.string().optional(),
+  shipmentMethod: z.string().default('Dikirim'),
   lat: z.number().optional(),
   lng: z.number().optional(),
 })

@@ -60,7 +60,7 @@
 
 @layer utilities {
   .wrapper {
-    @apply max-w-7xl lg:mx-auto p-5 md:px-10 w-full;
+    @apply max-w-7xl mx-auto p-5 md:px-10 w-full;
   }
 
   .flex-start {
@@ -83,5 +83,9 @@
 
   .h3-bold {
     @apply font-bold text-xl lg:text-2xl;
+  }
+
+  .responsive-image {
+    @apply w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40;
   }
 }

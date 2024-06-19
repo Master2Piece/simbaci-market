@@ -100,7 +100,7 @@ export default function OrderDetailsForm({
           })
         }
       >
-        {isPending ? 'processing...' : 'Di bayar'}
+        {isPending ? 'processing...' : 'Telah dibayar'}
       </Button>
     )
   }
@@ -122,7 +122,7 @@ export default function OrderDetailsForm({
           })
         }
       >
-        {isPending ? 'processing...' : 'Di kirim'}
+        {isPending ? 'processing...' : 'Telah dirim'}
       </Button>
     )
   }
@@ -147,19 +147,28 @@ export default function OrderDetailsForm({
           </Card>
           <Card>
             <CardContent className="p-4 gap-4">
-              <h2 className="text-xl pb-4">Alamat pengiriman</h2>
+              <h2 className="text-xl pb-4">Detail penerima</h2>
+              <p className="text-l pb-4">{shippingAddress.shipmentMethod}</p>
               <p>{shippingAddress.fullName}</p>
               <p>
-                {shippingAddress.streetAddress}, {shippingAddress.city},{' '}
-                {shippingAddress.postalCode}{' '}
+                {shippingAddress.streetAddress}
+                {shippingAddress.city}
+                {shippingAddress.postalCode}
+                {shippingAddress.phoneNumber}
               </p>
 
               {isDelivered ? (
                 <Badge variant="secondary">
-                  Telah terkirim {formatDateTime(deliveredAt!).dateTime}
+                  {shippingAddress.shipmentMethod === 'Diambil'
+                    ? `Telah diambil ${formatDateTime(deliveredAt!).dateTime}`
+                    : `Telah dikirim ${formatDateTime(deliveredAt!).dateTime}`}
                 </Badge>
               ) : (
-                <Badge variant="destructive">Belum dikirim</Badge>
+                <Badge variant="destructive">
+                  {shippingAddress.shipmentMethod === 'Diambil'
+                    ? 'Belum diambil'
+                    : 'Belum dikirim'}
+                </Badge>
               )}
             </CardContent>
           </Card>

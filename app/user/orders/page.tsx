@@ -57,7 +57,7 @@ export default async function OrdersPage({
                 <TableCell>
                   {order.isDelivered && order.deliveredAt
                     ? formatDateTime(order.deliveredAt).dateTime
-                    : 'belum terkiriim'}
+                    : 'belum terkirim'}
                 </TableCell>
                 <TableCell>
                   <Link href={`/order/${order.id}`}>

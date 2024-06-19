@@ -1,5 +1,5 @@
 import { auth } from '@/auth'
-import DeleteDialog from '@/components/shared/delete-dialog'
+import CancelDialog from '@/components/shared/cancel-dialog'
 import Pagination from '@/components/shared/pagination'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,7 +10,7 @@ import {
   TableHead,
   TableCell,
 } from '@/components/ui/table'
-import { deleteOrder, getAllOrders } from '@/lib/actions/order-actions'
+import { cancelOrder, getAllOrders } from '@/lib/actions/order-actions'
 import { APP_NAME } from '@/lib/constants'
 import { formatCurrency, formatDateTime, formatId } from '@/lib/utils'
 import { Metadata } from 'next'
@@ -44,6 +44,7 @@ export default async function OrdersPage({
               <TableHead>Total</TableHead>
               <TableHead>Terbayar</TableHead>
               <TableHead>Terkirim</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Tindakan</TableHead>
             </TableRow>
           </TableHeader>
@@ -68,11 +69,14 @@ export default async function OrdersPage({
                     ? formatDateTime(order.deliveredAt).dateTime
                     : 'belum terkirim'}
                 </TableCell>
+                <TableCell>
+                  {order.status === 'Selesai' ? 'Selesai' : 'Belum dibayar'}
+                </TableCell>
                 <TableCell className="flex gap-1">
                   <Button asChild variant="outline" size="sm">
-                    <Link href={`/order/${order.id}`}>Details</Link>
+                    <Link href={`/order/${order.id}`}>Detail</Link>
                   </Button>
-                  <DeleteDialog id={order.id} action={deleteOrder} />
+                  <CancelDialog id={order.id} action={cancelOrder} />
                 </TableCell>
               </TableRow>
             ))}

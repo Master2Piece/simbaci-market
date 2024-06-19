@@ -115,7 +115,17 @@ export async function updateUserAddress(data: shippingAddress) {
     if (!currentUser) throw new Error('User tidak ditemukan')
 
     const address = shippingAddressSchema.parse(data)
-    await db.update(users).set({ address }).where(eq(users.id, currentUser.id))
+    await db
+      .update(users)
+      .set({
+        address: {
+          ...address,
+          phoneNumber: data.phoneNumber, // Tambahkan phoneNumber ke address
+        },
+        phoneNumber: data.phoneNumber, // Simpan phoneNumber secara langsung ke kolom users
+      })
+      .where(eq(users.id, currentUser.id))
+
     revalidatePath('/place-order')
     return {
       success: true,

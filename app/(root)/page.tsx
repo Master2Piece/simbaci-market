@@ -1,6 +1,7 @@
 import ProductCarousel from '@/components/shared/product/product-carousel'
 import ProductList from '@/components/shared/product/product-list'
 import {
+  getProducts,
   getFeaturedProducts,
   getLatestProducts,
 } from '@/lib/actions/product-actions'
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   const latestProducts = await getLatestProducts()
   const featuredProducts = await getFeaturedProducts()
+  const allProducts = await getProducts()
   return (
     <div>
       {featuredProducts.length > 0 && (
@@ -21,6 +23,9 @@ export default async function Home() {
       )}
       <div className="space-y-8">
         <ProductList title="Produk terbaru" data={latestProducts} />
+      </div>
+      <div className="space-y-8">
+        <ProductList title="Semua produk" data={allProducts} />
       </div>
     </div>
   )

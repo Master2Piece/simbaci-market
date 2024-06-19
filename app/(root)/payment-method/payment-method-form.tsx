@@ -63,9 +63,9 @@ export default function PaymentMethodForm({
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4"
           >
-            <h1 className="h2-bold mt-4">Metode Pembayaran</h1>
+            <h1 className="h2-bold mt-4">Pembayaran</h1>
             <p className="text-sm text-muted-foreground">
-              Pilih metode pembayaran yang Anda inginkan
+              Pilih pembayaran yang ingin anda gunakan
             </p>
 
             <h3 className="mt-8 h3-bold"></h3>

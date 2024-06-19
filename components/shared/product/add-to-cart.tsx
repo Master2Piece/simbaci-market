@@ -45,7 +45,7 @@ export default function AddToCart({
           <Minus className="w-4 h-4" />
         )}
       </Button>
-      <span className="px-2">{existItem.qty}</span>
+      <span className="px-4">{existItem.qty}</span>
       <Button
         type="button"
         variant="outline"

@@ -20,17 +20,23 @@ export const shippingAddressDefaultValues = {
   streetAddress: '',
   city: '',
   postalCode: '',
+  phoneNumber: '',
 }
 
 export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
   ? process.env.PAYMENT_METHODS.split(', ')
-  : ['Midtrans', 'Doku', 'Paypal', 'CashOnDelivery']
+  : ['Via Website', 'Paypal', 'CashOnDelivery']
+
 export const DEFAULT_PAYMENT_METHOD =
   process.env.DEFAULT_PAYMENT_METHOD || 'Paypal'
 
 export const USER_ROLES = process.env.USER_ROLES
   ? process.env.USER_ROLES.split(', ')
   : ['admin', 'user']
+
+export const SHIPMENT_METHODS = process.env.SHIPMENT_METHODS
+  ? process.env.SHIPMENT_METHODS.split(', ')
+  : ['diambil', 'dikirim']
 
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 3
 
