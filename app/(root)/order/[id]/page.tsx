@@ -18,9 +18,17 @@ const OrderDetailsPage = async ({
   const session = await auth()
   const order = await getOrderById(id)
   if (!order) notFound()
+
+  const formattedOrder = {
+    ...order,
+    orderItems: order.orderItems.map((item) => ({
+      ...item,
+      price: parseFloat(item.price),
+    })),
+  }
   return (
     <OrderDetailsForm
-      order={order}
+      order={formattedOrder}
       paypalClientId={process.env.PAYPAL_CLIENT_ID || 'sb'}
       isAdmin={session?.user.role === 'admin' || false}
     />

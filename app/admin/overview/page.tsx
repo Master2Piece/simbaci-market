@@ -101,7 +101,9 @@ const DashboardPage = async () => {
                     </TableCell>
 
                     <TableCell>
-                      {formatDateTime(order.createdAt).dateOnly}
+                      {order.createdAt
+                        ? formatDateTime(order.createdAt).dateOnly
+                        : 'N/A'}
                     </TableCell>
                     <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
 

@@ -17,7 +17,7 @@ export default async function UserDashboardLayout({
           <div className="flex h-16 items-center px-4">
             <Link href="/" className="w-36">
               <Image
-                src="/assets/icons/logo.svg"
+                src="/assets/icons/Logo Simbaci.svg"
                 width={48}
                 height={48}
                 alt={`${APP_NAME} logo`}

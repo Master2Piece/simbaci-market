@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import { APP_NAME } from "@/lib/constants";
-import { getMyCart } from "@/lib/actions/cart-actions";
-import { auth } from "@/auth";
-import { getUserById } from "@/lib/actions/user-actions";
-import { redirect } from "next/navigation";
-import CheckoutSteps from "@/components/shared/checkout-steps";
-import { Card, CardContent } from "@/components/ui/card";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import React from 'react'
+import { APP_NAME } from '@/lib/constants'
+import { getMyCart } from '@/lib/actions/cart-actions'
+import { auth } from '@/auth'
+import { getUserById } from '@/lib/actions/user-actions'
+import { redirect } from 'next/navigation'
+import CheckoutSteps from '@/components/shared/checkout-steps'
+import { Card, CardContent } from '@/components/ui/card'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 import {
   Table,
   TableBody,
@@ -15,22 +15,22 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import Image from "next/image";
-import { formatCurrency } from "@/lib/utils";
-import PlaceOrderForm from "./place-order-form";
+} from '@/components/ui/table'
+import Image from 'next/image'
+import { formatCurrency } from '@/lib/utils'
+import PlaceOrderForm from './place-order-form'
 
 export const metadata = {
   title: `Pesanan - ${APP_NAME}`,
-};
+}
 
 export default async function PlaceOrderPage() {
-  const cart = await getMyCart();
-  const session = await auth();
-  const user = await getUserById(session?.user.id!);
-  if (!cart || cart.items.length === 0) redirect("/cart");
-  if (!user.address) redirect("/shipping-address");
-  if (!user.paymentMethod) redirect("/payment-method");
+  const cart = await getMyCart()
+  const session = await auth()
+  const user = await getUserById(session?.user.id!)
+  if (!cart || cart.items.length === 0) redirect('/cart')
+  if (!user.address) redirect('/shipping-address')
+  if (!user.paymentMethod) redirect('/payment-method')
 
   return (
     <>
@@ -41,11 +41,15 @@ export default async function PlaceOrderPage() {
         <div className="overflow-x-auto md:col-span-2 space-y-4">
           <Card>
             <CardContent className="p-4 gap-4">
-              <h2 className="text-xl pb-4">Alamat pengiriman</h2>
+              <h2 className="text-xl pb-4">
+                Detail Penerima - {user.address.shipmentMethod}
+              </h2>
               <p>{user.address.fullName}</p>
+              <p>{user.address.phoneNumber}</p>
               <p>
-                {user.address.streetAddress}, {user.address.city},{" "}
-                {user.address.postalCode}{" "}
+                {user.address.streetAddress}
+                {user.address.city}
+                {user.address.postalCode}
               </p>
               <div>
                 <Link href="/shipping-address">
@@ -134,5 +138,5 @@ export default async function PlaceOrderPage() {
         </div>
       </div>
     </>
-  );
+  )
 }

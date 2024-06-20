@@ -14,7 +14,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: `My Orders - ${APP_NAME}`,
+  title: `Pesanan saya - ${APP_NAME}`,
 }
 export default async function OrdersPage({
   searchParams,
@@ -46,11 +46,17 @@ export default async function OrdersPage({
               <TableRow key={order.id}>
                 <TableCell>{order.id.substring(20, 24)}</TableCell>
                 <TableCell>
-                  {formatDateTime(order.createdAt).dateTime}
+                  {order.createdAt
+                    ? formatDateTime(order.createdAt).dateTime
+                    : 'N/A'}
                 </TableCell>
                 <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
                 <TableCell>
-                  {order.isPaid ? <span className='text-green-500'>Sudah Bayar</span> : "Belum Bayar"}
+                  {order.isPaid ? (
+                    <span className="text-green-500">Sudah Bayar</span>
+                  ) : (
+                    'Belum Bayar'
+                  )}
                 </TableCell>
                 <TableCell>
                   {order.isDelivered && order.deliveredAt

@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import CheckoutSteps from "@/components/shared/checkout-steps";
-import { Button } from "@/components/ui/button";
+import CheckoutSteps from '@/components/shared/checkout-steps'
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -9,48 +9,48 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { RadioGroupItem, RadioGroup } from "@/components/ui/radio-group";
-import { useToast } from "@/components/ui/use-toast";
-import { updateUserPaymentMethod } from "@/lib/actions/user-actions";
-import { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } from "@/lib/constants";
-import { paymentMethodSchema } from "@/lib/validator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Loader } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from '@/components/ui/form'
+import { RadioGroupItem, RadioGroup } from '@/components/ui/radio-group'
+import { useToast } from '@/components/ui/use-toast'
+import { updateUserPaymentMethod } from '@/lib/actions/user-actions'
+import { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } from '@/lib/constants'
+import { paymentMethodSchema } from '@/lib/validator'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ArrowRight, Loader } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useTransition } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 export default function PaymentMethodForm({
   preferredPaymentMethod,
 }: {
-  preferredPaymentMethod: string | null;
+  preferredPaymentMethod: string | null
 }) {
-  const router = useRouter();
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof paymentMethodSchema>>({
     resolver: zodResolver(paymentMethodSchema),
     defaultValues: {
       type: preferredPaymentMethod || DEFAULT_PAYMENT_METHOD,
     },
-  });
+  })
 
-  const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition()
 
-  const { toast } = useToast();
+  const { toast } = useToast()
   async function onSubmit(values: z.infer<typeof paymentMethodSchema>) {
     startTransition(async () => {
-      const res = await updateUserPaymentMethod(values);
+      const res = await updateUserPaymentMethod(values)
       if (!res.success) {
         toast({
-          variant: "destructive",
+          variant: 'destructive',
           description: res.message,
-        });
-        return;
+        })
+        return
       }
-      router.push("/place-order");
-    });
+      router.push('/place-order')
+    })
   }
 
   return (
@@ -119,5 +119,5 @@ export default function PaymentMethodForm({
         </Form>
       </div>
     </>
-  );
+  )
 }

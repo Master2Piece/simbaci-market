@@ -53,7 +53,9 @@ export default async function OrdersPage({
               <TableRow key={order.id}>
                 <TableCell>{formatId(order.id)}</TableCell>
                 <TableCell>
-                  {formatDateTime(order.createdAt).dateTime}
+                  {order.createdAt
+                    ? formatDateTime(order.createdAt).dateTime
+                    : 'N/A'}
                 </TableCell>
                 <TableCell>
                   {order.user ? order.user.name : 'Deleted user'}
