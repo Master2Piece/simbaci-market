@@ -15,13 +15,17 @@ export default async function AdminLayout({
       <div className="flex flex-col">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
-            <Link href="/" className="w-36">
-              <Image
-                src="/assets/icons/logo.svg"
-                width={48}
-                height={48}
-                alt={`${APP_NAME} logo`}
-              />
+            <Link href="/" className="flex items-center">
+              <div className="w-12 md:w-36">
+                {/* Tailwind classes for responsive width */}
+                <Image
+                  src="/assets/icons/Logo simbaci.svg"
+                  width={50} // Set the maximum width
+                  height={50} // Set the maximum height
+                  alt={`${APP_NAME} logo`}
+                  className="w-full h-auto"
+                />
+              </div>
             </Link>
             <MainNav className="mx-6" />
             <div className="ml-auto flex items-center space-x-4">

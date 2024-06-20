@@ -15,7 +15,7 @@ import {
   AlertDialogTrigger,
 } from '../ui/alert-dialog'
 
-export default function DeleteDialog({
+export default function CancelDialog({
   id,
   action,
 }: {
@@ -30,7 +30,7 @@ export default function DeleteDialog({
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button size="sm" variant="outline">
-          Hapus
+          Batalkan
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -64,7 +64,7 @@ export default function DeleteDialog({
               })
             }
           >
-            {isPending ? 'Deleting...' : 'Delete'}
+            {isPending ? 'Membatalkan...' : 'Batalkan'}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -21,6 +21,11 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { UploadButton } from '@/lib/uploadthing'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { getAllCategories } from '@/lib/actions/categories-action'
 
 export default function ProductForm({
   type,
@@ -31,36 +36,44 @@ export default function ProductForm({
   product?: Product
   productId?: string
 }) {
-  console.log('ProductForm type', type)
   const router = useRouter()
+  const { toast } = useToast()
+
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
+    []
+  )
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const response = await getAllCategories()
+        setCategories(response.category_name)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      }
+    }
+    fetchCategories()
+  }, [])
+
+  const categoryOptions = categories.map((category) => ({
+    value: category.id,
+    label: category.name,
+  }))
 
   const form = useForm<z.infer<typeof insertProductSchema>>({
     resolver:
-      type === 'Create'
-        ? zodResolver(insertProductSchema)
-        : zodResolver(updateProductSchema),
+      type === 'Update'
+        ? zodResolver(updateProductSchema)
+        : zodResolver(insertProductSchema),
     defaultValues:
       product && type === 'Update' ? product : productDefaultValues,
   })
 
-  const { toast } = useToast()
-
   async function onSubmit(values: z.infer<typeof insertProductSchema>) {
-    console.log('Onsubmit data: ', values)
     try {
       if (type === 'Create') {
         const res = await createProduct(values)
-        if (!res.success) {
-          toast({
-            variant: 'destructive',
-            description: res.message,
-          })
-        } else {
-          toast({
-            description: res.message,
-          })
-          router.push(`/admin/products`)
-        }
+        handleResponse(res)
       }
       if (type === 'Update') {
         if (!productId) {
@@ -68,20 +81,30 @@ export default function ProductForm({
           return
         }
         const res = await updateProduct({ ...values, id: productId })
-        console.log('updateProduct response:', res)
-        if (!res.success) {
-          toast({
-            variant: 'destructive',
-            description: res.message,
-          })
-        } else {
-          router.push(`/admin/products`)
-        }
+        handleResponse(res)
       }
     } catch (error) {
-      console.error('Error in onSubmit:', error)
+      console.error('Error submitting form:', error)
     }
   }
+
+  function handleResponse(res: any) {
+    if (!res.success) {
+      toast({
+        variant: 'destructive',
+        description: res.message,
+      })
+    } else {
+      toast({
+        description: res.message,
+      })
+      router.push(`/admin/products`)
+    }
+  }
+
+  console.log(form.formState.errors)
+  const images = form.watch('images')
+
   return (
     <Form {...form}>
       <form
@@ -93,13 +116,12 @@ export default function ProductForm({
           <FormField
             control={form.control}
             name="name"
-            render={({ field }: { field: any }) => (
+            render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nama</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter product name" {...field} />
+                  <Input placeholder="Masukkan nama produk" {...field} />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -108,14 +130,13 @@ export default function ProductForm({
           <FormField
             control={form.control}
             name="slug"
-            render={({ field }: { field: any }) => (
+            render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel htmlFor={field.name}>Slug</FormLabel>
+                <FormLabel>Slug</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
-                      id={field.name}
-                      placeholder="Enter product slug"
+                      placeholder="Masukkan slug produk"
                       className="pl-8"
                       {...field}
                     />
@@ -137,15 +158,16 @@ export default function ProductForm({
             )}
           />
         </div>
+
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
             name="price"
-            render={({ field }: { field: any }) => (
+            render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Price</FormLabel>
+                <FormLabel>Harga</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter product price" {...field} />
+                  <Input placeholder="Masukkan harga produk" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -154,16 +176,86 @@ export default function ProductForm({
           <FormField
             control={form.control}
             name="stock"
-            render={({ field }: { field: any }) => (
+            render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Stock</FormLabel>
+                <FormLabel>Stok</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="Enter product stock"
+                    placeholder="Masukkan stok produk"
                     {...field}
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name="categoryId"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Kategori</FormLabel>
+                <FormControl>
+                  <select
+                    {...field}
+                    value={field.value || ''}
+                    className="select w-full"
+                  >
+                    <option value="">Pilih kategori</option>
+                    {categoryOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name="images"
+            render={() => (
+              <FormItem className="w-full">
+                <FormLabel>Images</FormLabel>
+                <Card>
+                  <CardContent className="space-y-2 mt-2 min-h-48">
+                    <div className="flex-start space-x-2">
+                      {images.map((image: string, index: number) => (
+                        <Image
+                          key={index}
+                          src={image}
+                          alt={`product image ${index}`}
+                          className="w-20 h-20 object-cover object-center rounded-sm"
+                          width={100}
+                          height={100}
+                        />
+                      ))}
+                      <FormControl>
+                        <UploadButton
+                          endpoint="imageUploader"
+                          onClientUploadComplete={(res: any) => {
+                            form.setValue('images', [...images, res[0]?.url])
+                          }}
+                          onUploadError={(error: Error) => {
+                            toast({
+                              variant: 'destructive',
+                              description: `ERROR! ${error.message}`,
+                            })
+                          }}
+                        />
+                      </FormControl>
+                    </div>
+                  </CardContent>
+                </Card>
                 <FormMessage />
               </FormItem>
             )}
@@ -176,11 +268,30 @@ export default function ProductForm({
             name="description"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Description</FormLabel>
+                <FormLabel>Deskripsi</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Enter product description"
+                    placeholder="Masukkan deskripsi produk"
                     className="resize-none"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div>
+          <FormField
+            control={form.control}
+            name="unit"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Unit</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="
+                    Masukkan unit produk"
                     {...field}
                   />
                 </FormControl>

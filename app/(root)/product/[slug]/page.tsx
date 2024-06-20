@@ -52,6 +52,7 @@ const ProductDetails = async ({
                     value={Number(product.price)}
                     className="p-bold-20 rounded-full bg-green-500/10 px-5 py-2 text-green-700"
                   />
+                  <span className="text-xl">/ {product.unit}</span>
                 </div>
               </div>
             </div>
@@ -79,7 +80,7 @@ const ProductDetails = async ({
                   )}
                 </div>
                 {product.stock !== 0 && (
-                  <div className=" flex-center">
+                  <div className=" flex-center text-xl">
                     <AddToCart
                       cart={cart}
                       item={{

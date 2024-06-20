@@ -38,6 +38,7 @@ const sampleData = {
       stock: 10,
       description: 'Kardus bekas ini dijual dalam satuan kilogram.',
       isFeatured: true,
+      unit: 'kg',
     },
     {
       name: 'Plastik Kresek',
@@ -47,6 +48,7 @@ const sampleData = {
       stock: 50,
       description: 'Plastik kresek bekas ini dijual dalam satuan pcs.',
       isFeatured: true,
+      unit: 'pcs',
     },
     {
       name: 'Kaleng Bekas',
@@ -55,6 +57,8 @@ const sampleData = {
       price: '500',
       stock: 20,
       description: 'Kaleng bekas ini dijual dalam satuan kilogram.',
+      isFeatured: false,
+      unit: 'kg',
     },
     {
       name: 'Baterai AA',
@@ -63,6 +67,8 @@ const sampleData = {
       price: '700',
       stock: 10,
       description: 'Baterai AA bekas ini dijual dalam satuan kilogram.',
+      isFeatured: false,
+      unit: 'kg',
     },
   ],
 }

@@ -73,6 +73,11 @@ export async function getProductBySlug(slug: string) {
   })
 }
 
+export async function getProducts() {
+  const data = await db.query.products.findMany({})
+  return data
+}
+
 export async function getAllProducts({
   query,
   limit = PAGE_SIZE,
@@ -118,7 +123,6 @@ export async function getAllProducts({
       description: products.description,
       stock: products.stock,
       price: products.price,
-      rating: products.rating,
       isFeatured: products.isFeatured,
       category: categories.name,
     })

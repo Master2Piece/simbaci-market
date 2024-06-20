@@ -7,28 +7,20 @@ import React from 'react'
 
 const links = [
   {
-    title: 'Overview',
+    title: 'Laporan',
     href: '/admin/overview',
   },
   {
-    title: 'Products',
+    title: 'Produk',
     href: '/admin/products',
   },
   {
-    title: 'Categories',
-    href: '/admin/categories',
-  },
-  {
-    title: 'Orders',
+    title: 'Pesanan',
     href: '/admin/orders',
   },
   {
-    title: 'Users',
+    title: 'Pembeli',
     href: '/admin/users',
-  },
-  {
-    title: 'Settings',
-    href: '/admin/settings',
   },
 ]
 export function MainNav({

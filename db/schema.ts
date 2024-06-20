@@ -22,6 +22,7 @@ export const orders = pgTable('order', {
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   shippingAddress: json('shippingAddress').$type<shippingAddress>().notNull(),
+  shipmentMethod: text('shipmentMethod').notNull(),
   paymentMethod: text('paymentMethod').notNull(),
   paymentResult: json('paymentResult').$type<paymentResult>(),
   itemsPrice: numeric('itemsPrice', { precision: 12, scale: 2 }).notNull(),
@@ -35,6 +36,7 @@ export const orders = pgTable('order', {
   paidAt: timestamp('paidAt'),
   isDelivered: boolean('isDelivered').notNull().default(false),
   deliveredAt: timestamp('deliveredAt'),
+  status: text('status').notNull().default('Belum dibayar'),
   createdAt: timestamp('createdAt').defaultNow(),
 })
 
@@ -85,6 +87,7 @@ export const users = pgTable(
     image: text('image'),
     address: json('address').$type<shippingAddress>(),
     paymentMethod: text('paymentMethod'),
+    phoneNumber: text('phoneNumber'),
     createdAt: timestamp('createdAt').defaultNow(),
   },
   (table) => {
@@ -172,11 +175,9 @@ export const products = pgTable(
     description: text('description').notNull(),
     stock: integer('stock').notNull(),
     price: numeric('price', { precision: 12, scale: 2 }).notNull().default('0'),
-    rating: numeric('rating', { precision: 3, scale: 2 })
-      .notNull()
-      .default('0'),
     isFeatured: boolean('is_featured').default(false).notNull(),
     createdAt: timestamp('createdAt').defaultNow().notNull(),
+    unit: text('unit').notNull(),
   },
   (table) => {
     return {

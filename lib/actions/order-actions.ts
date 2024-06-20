@@ -120,6 +120,7 @@ export const createOrder = async ({ isPaid }: { isPaid: boolean }) => {
       userId: user.id,
       shippingAddress: user.address,
       paymentMethod: user.paymentMethod,
+      shipmentMethod: user.address.shipmentMethod,
       itemsPrice: cart.itemsPrice,
       shippingPrice: cart.shippingPrice,
       taxPrice: cart.taxPrice,
@@ -291,6 +292,7 @@ export async function deliverOrder(orderId: string) {
       .set({
         isDelivered: true,
         deliveredAt: new Date(),
+        status: 'Selesai',
       })
       .where(eq(orders.id, orderId));
     revalidatePath(`/order/${orderId}`);

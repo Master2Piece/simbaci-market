@@ -5,7 +5,6 @@ import { APP_NAME } from '@/lib/constants'
 import { formatCurrency, formatDateTime, formatNumber } from '@/lib/utils'
 import { BadgeDollarSign, Barcode, CreditCard, Users } from 'lucide-react'
 import { Metadata } from 'next'
-import Charts from './charts'
 import {
   Table,
   TableBody,
@@ -80,18 +79,6 @@ const DashboardPage = async () => {
         </Card>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
-          <CardHeader>
-            <CardTitle>Chart</CardTitle>
-          </CardHeader>
-          <CardContent className="pl-2">
-            <Charts
-              data={{
-                salesData: summary.salesData,
-              }}
-            />
-          </CardContent>
-        </Card>
         <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Penjualan terkini</CardTitle>

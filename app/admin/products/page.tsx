@@ -46,7 +46,7 @@ export default async function AdminProductsPage({
               <TableHead>Id</TableHead>
               <TableHead>Nama produk</TableHead>
               <TableHead className="text-right">Harga</TableHead>
-              <TableHead>Category</TableHead>
+              <TableHead>Kategori</TableHead>
               <TableHead>Stok</TableHead>
               <TableHead className="w-[100px]">Tindakan</TableHead>
             </TableRow>
