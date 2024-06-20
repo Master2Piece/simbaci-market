@@ -50,9 +50,7 @@ export default async function OrdersPage({
                 </TableCell>
                 <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
                 <TableCell>
-                  {order.isPaid && order.paidAt
-                    ? formatDateTime(order.paidAt).dateTime
-                    : 'belum dibayar'}
+                  {order.isPaid ? <span className='text-green-500'>Sudah Bayar</span> : "Belum Bayar"}
                 </TableCell>
                 <TableCell>
                   {order.isDelivered && order.deliveredAt
