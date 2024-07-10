@@ -64,7 +64,7 @@ export default function DeleteDialog({
               })
             }
           >
-            {isPending ? 'Deleting...' : 'Delete'}
+            {isPending ? 'Deleting...' : 'Hapus'}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

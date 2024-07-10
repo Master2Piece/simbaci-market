@@ -90,8 +90,19 @@ export default function PlaceOrderForm({
         console.error('Error during the checkout process:', error)
         alert('Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.')
       }
+    }
+    if (paymentMethod === 'CashOnDelivery') {
+      try {
+        // Call the createOrder function to insert the order into the database
+        await createOrder({ isPaid: false })
+        alert('Pesanan berhasil dibuat!')
+      } catch (error) {
+        // Penanganan kesalahan
+        console.error('Error during the checkout process:', error)
+        alert('Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.')
+      }
     } else {
-      alert('Metode Pembayaran tidak tersedia!')
+      alert('Metode pembayaran tidak valid')
     }
   }
 

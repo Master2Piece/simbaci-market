@@ -3,7 +3,7 @@ import { APP_NAME } from '@/lib/constants'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: `Create product - ${APP_NAME}`,
+  title: `Buat Produk - ${APP_NAME}`,
 }
 
 export default async function CreateProductPage() {

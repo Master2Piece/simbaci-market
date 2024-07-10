@@ -50,3 +50,7 @@ export const productDefaultValues = {
   categoryId: null,
   images: [],
 }
+
+export const categoryDefaultValues = {
+  name: '',
+}

@@ -37,7 +37,7 @@ export default async function SignUp({
         <CardHeader className="space-y-4">
           <Link href="/" className="flex-center">
             <Image
-              src="/assets/icons/logo.svg"
+              src="/assets/icons/Logo Simbaci.svg"
               width={100}
               height={100}
               alt={`${APP_NAME} logo`}

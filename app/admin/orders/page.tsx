@@ -62,17 +62,21 @@ export default async function OrdersPage({
                 </TableCell>
                 <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
                 <TableCell>
-                  {order.isPaid && order.paidAt
-                    ? formatDateTime(order.paidAt).dateTime
-                    : 'belum dibayar'}
+                  {order.isPaid ? (
+                    <span className="text-green-500">Sudah Dibayar</span>
+                  ) : (
+                    'Belum Bayar'
+                  )}
                 </TableCell>
                 <TableCell>
-                  {order.isDelivered && order.deliveredAt
-                    ? formatDateTime(order.deliveredAt).dateTime
-                    : 'belum terkirim'}
+                  {order.isDelivered ? (
+                    <span className="text-green-500">Sudah Dikirim</span>
+                  ) : (
+                    'Belum Dikirim'
+                  )}
                 </TableCell>
                 <TableCell>
-                  {order.status === 'Selesai' ? 'Selesai' : 'Belum dibayar'}
+                  {order.status ? <span>{order.status}</span> : 'N/A'}
                 </TableCell>
                 <TableCell className="flex gap-1">
                   <Button asChild variant="outline" size="sm">

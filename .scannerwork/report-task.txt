@@ -1,0 +1,6 @@
+projectKey=simbaci-market
+serverUrl=http://localhost:9000
+serverVersion=10.5.1.90531
+dashboardUrl=http://localhost:9000/dashboard?id=simbaci-market
+ceTaskId=46bf5307-f7b1-4f51-9435-ce1b5694eae6
+ceTaskUrl=http://localhost:9000/api/ce/task?id=46bf5307-f7b1-4f51-9435-ce1b5694eae6

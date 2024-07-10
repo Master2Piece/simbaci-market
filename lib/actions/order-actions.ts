@@ -126,6 +126,8 @@ export const createOrder = async ({ isPaid }: { isPaid: boolean }) => {
       taxPrice: cart.taxPrice,
       totalPrice: cart.totalPrice,
       isPaid: isPaid,
+      paidAt: isPaid ? new Date() : undefined,
+      status: isPaid ? 'Proses' : 'Belum dibayar',
     })
     const insertedOrderId = await db.transaction(async (tx) => {
       const insertedOrder = await tx.insert(orders).values(order).returning()
@@ -240,17 +242,32 @@ export async function deleteOrder(id: string) {
   }
 }
 
-// CANCEL order status
 export async function cancelOrder(id: string) {
   try {
+    // Fetch the order to check its isPaid status
+    const order = await db.query.orders.findFirst({
+      where: eq(orders.id, id),
+    })
+
+    if (order?.isPaid) {
+      return {
+        success: false,
+        message: 'Pesanan telah dibayar dan tidak bisa dibatalkan',
+      }
+    }
+
+    // Update the order status to 'Dibatalkan'
     await db
       .update(orders)
       .set({ status: 'Dibatalkan' })
       .where(eq(orders.id, id))
+
+    // Revalidate the orders page
     revalidatePath('/admin/orders')
+
     return {
       success: true,
-      message: 'Pesanan berhasil dihapus',
+      message: 'Pesanan berhasil dibatalkan',
     }
   } catch (error) {
     return { success: false, message: formatError(error) }
@@ -272,12 +289,6 @@ export const updateOrderToPaid = async ({
   if (!order) throw new Error('Pesanan tidak ditemukan')
   if (order.isPaid) throw new Error('Pesanan sudah dibayar')
   await db.transaction(async (tx) => {
-    for (const item of order.orderItems) {
-      await tx
-        .update(products)
-        .set({ stock: sql`${products.stock} - ${item.qty}` })
-        .where(eq(products.id, item.productId))
-    }
     await tx
       .update(orders)
       .set({ isPaid: true, paidAt: new Date(), paymentResult })
@@ -299,11 +310,19 @@ export async function deliverOrder(orderId: string) {
   try {
     const order = await db.query.orders.findFirst({
       where: eq(orders.id, orderId),
+      with: { orderItems: true },
     })
     if (!order) throw new Error('Pesanan tidak ditemukan')
     if (!order.isPaid) throw new Error('Pesanan belum dibayar')
-    order.isDelivered = true
-    order.deliveredAt = new Date()
+
+    await db.transaction(async (tx) => {
+      for (const item of order.orderItems) {
+        await tx
+          .update(products)
+          .set({ stock: sql`${products.stock} - ${item.qty}` })
+          .where(eq(products.id, item.productId))
+      }
+    })
     await db
       .update(orders)
       .set({
@@ -312,9 +331,11 @@ export async function deliverOrder(orderId: string) {
         status: 'Selesai',
       })
       .where(eq(orders.id, orderId))
+
     revalidatePath(`/order/${orderId}`)
     return { success: true, message: 'Pesanan berhasil dikirim' }
   } catch (err) {
-    return { success: false, message: formatError(err) }
+    console.error(err) // Added detailed error logging
+    return { success: false, message: 'An error occurred' } // Generic message for the user
   }
 }

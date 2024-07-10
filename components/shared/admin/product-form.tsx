@@ -307,7 +307,7 @@ export default function ProductForm({
             disabled={form.formState.isSubmitting}
             className="button col-span-2 w-full"
           >
-            {form.formState.isSubmitting ? 'Submitting...' : `${type} Product `}
+            {form.formState.isSubmitting ? 'Submitting...' : `${type} Produk `}
           </Button>
         </div>
       </form>

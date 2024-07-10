@@ -6,26 +6,26 @@ import { categories, orderItems, orders, products } from '@/db/schema'
 
 // USER
 export const signInFormSchema = z.object({
-  email: z.string().email().min(3, 'Email must be at least 3 characters'),
-  password: z.string().min(3, 'Password must be at least 3 characters'),
+  email: z.string().email().min(3, 'Email minimal 3 karakter'),
+  password: z.string().min(3, 'Password minimal 3 karakter'),
 })
 
 export const signUpFormSchema = z
   .object({
-    name: z.string().min(3, 'Name must be at least 3 characters'),
-    email: z.string().min(3, 'Email must be at least 3 characters'),
-    password: z.string().min(3, 'Password must be at least 3 characters'),
+    name: z.string().min(3, 'Nama minimal 3 karakter'),
+    email: z.string().min(3, 'Email minimal 3 karakter'),
+    password: z.string().min(3, 'Password minimal 3 karakter'),
     confirmPassword: z
       .string()
-      .min(3, 'Confirm password must be at least 3 characters'),
+      .min(3, 'Konfirmasi password minimal 3 karakter'),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
+    message: 'Password dan konfirmasi password tidak sama',
     path: ['confirmPassword'],
   })
 
 export const updateProfileSchema = z.object({
-  name: z.string().min(3, 'Name must be at least 3 characters'),
+  name: z.string().min(3, 'Nama harus diisi minimal 3 karakter'),
   email: z.string().email().min(3, 'Email must be at least 3 characters'),
 })
 
@@ -35,7 +35,8 @@ export const updateUserSchema = updateProfileSchema.extend({
 })
 
 export const insertProductSchema = createSelectSchema(products, {
-  images: z.array(z.string()),
+  name: z.string().min(3, 'Nama produk minimal 3 karakter'),
+  images: z.array(z.string()).min(1, 'Minimal 1 gambar produk'),
   stock: z.coerce.number(),
 }).omit({
   id: true,
@@ -43,8 +44,9 @@ export const insertProductSchema = createSelectSchema(products, {
 })
 
 export const updateProductSchema = createSelectSchema(products, {
-  images: z.array(z.string()),
-  stock: z.coerce.number(),
+  name: z.string().min(3, 'Nama produk minimal 3 karakter'),
+  images: z.array(z.string()).min(1, 'Minimal 1 gambar produk'),
+  stock: z.coerce.number().min(1, 'Stok minimal 0'),
 }).omit({
   createdAt: true,
 })
@@ -109,14 +111,15 @@ export const insertOrderItemSchema = createInsertSchema(orderItems, {
 
 // insert data in category schema
 export const insertCategorySchema = createInsertSchema(categories, {
-  name: z.string().min(1, 'Nama kategori minimal 1 karakter'),
+  name: z.string().min(3, 'Nama kategori minimal 3 karakter'),
 }).omit({
+  id: true,
   createdAt: true,
 })
 
 // update data in category schema
 export const updateCategorySchema = createSelectSchema(categories, {
-  name: z.string().min(1, 'Nama kategori minimal 1 karakter'),
+  name: z.string().min(3, 'Nama kategori minimal 3 karakter'),
 }).omit({
   createdAt: true,
 })

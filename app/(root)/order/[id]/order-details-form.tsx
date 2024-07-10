@@ -122,7 +122,7 @@ export default function OrderDetailsForm({
           })
         }
       >
-        {isPending ? 'processing...' : 'Telah dirim'}
+        {isPending ? 'processing...' : 'Telah Diterima'}
       </Button>
     )
   }
@@ -147,14 +147,13 @@ export default function OrderDetailsForm({
           </Card>
           <Card>
             <CardContent className="p-4 gap-4">
-              <h2 className="text-xl pb-4">Detail penerima</h2>
+              <h2 className="text-xl pb-4">Detail Penerima</h2>
               <p className="text-l pb-4">{shippingAddress.shipmentMethod}</p>
               <p>{shippingAddress.fullName}</p>
+              <p>{shippingAddress.phoneNumber}</p>
               <p>
-                {shippingAddress.streetAddress}
-                {shippingAddress.city}
+                {shippingAddress.streetAddress} {shippingAddress.city}{' '}
                 {shippingAddress.postalCode}
-                {shippingAddress.phoneNumber}
               </p>
 
               {isDelivered ? (

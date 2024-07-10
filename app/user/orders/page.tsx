@@ -1,4 +1,6 @@
+import CancelDialog from '@/components/shared/cancel-dialog'
 import Pagination from '@/components/shared/pagination'
+import { Button } from '@/components/ui/button'
 import {
   Table,
   TableBody,
@@ -7,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { getMyOrders } from '@/lib/actions/order-actions'
+import { cancelOrder, getMyOrders } from '@/lib/actions/order-actions'
 import { APP_NAME } from '@/lib/constants'
 import { formatCurrency, formatDateTime } from '@/lib/utils'
 import { Metadata } from 'next'
@@ -38,6 +40,7 @@ export default async function OrdersPage({
               <TableHead>Total</TableHead>
               <TableHead>Terbayar</TableHead>
               <TableHead>Terkirim</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Tindakan</TableHead>
             </TableRow>
           </TableHeader>
@@ -53,20 +56,28 @@ export default async function OrdersPage({
                 <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
                 <TableCell>
                   {order.isPaid ? (
-                    <span className="text-green-500">Sudah Bayar</span>
+                    <span className="text-green-500">Sudah Dibayar</span>
                   ) : (
                     'Belum Bayar'
                   )}
                 </TableCell>
                 <TableCell>
-                  {order.isDelivered && order.deliveredAt
-                    ? formatDateTime(order.deliveredAt).dateTime
-                    : 'belum terkirim'}
+                  {order.isDelivered ? (
+                    <span className="text-green-500">Sudah Diterima</span>
+                  ) : (
+                    'Belum Diterima'
+                  )}
                 </TableCell>
                 <TableCell>
-                  <Link href={`/order/${order.id}`}>
-                    <span className="px-2">Details</span>
-                  </Link>
+                  <TableCell>
+                    {order.status ? <span>{order.status}</span> : 'N/A'}
+                  </TableCell>
+                </TableCell>
+                <TableCell>
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/order/${order.id}`}>Detail</Link>
+                  </Button>
+                  <CancelDialog id={order.id} action={cancelOrder} />
                 </TableCell>
               </TableRow>
             ))}

@@ -35,7 +35,7 @@ export default function ShippingAddressForm({
   address: shippingAddress | null
 }) {
   const router = useRouter()
-  const [shipmentMethod, setShipmentMethod] = useState('Diantar')
+  const [shipmentMethod, setShipmentMethod] = useState('')
   const form = useForm<shippingAddress>({
     resolver: zodResolver(shippingAddressSchema),
     defaultValues: address || shippingAddressDefaultValues,

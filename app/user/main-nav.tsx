@@ -11,7 +11,7 @@ const links = [
     href: '/user/profile',
   },
   {
-    title: 'Orders',
+    title: 'Pesanan Saya',
     href: '/user/orders',
   },
 ]

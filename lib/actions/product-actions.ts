@@ -10,13 +10,14 @@ import { revalidatePath } from 'next/cache'
 import { formatError } from '../utils'
 import { insertProductSchema, updateProductSchema } from '../validator'
 import { z } from 'zod'
+import { Product } from '@/types'
 
 // CREATE
 export async function createProduct(data: z.infer<typeof insertProductSchema>) {
   try {
     const product = insertProductSchema.parse(data)
     await db.insert(products).values(product)
-    console.log('Product created:', product)
+    console.log('Produk dibuat:', product)
 
     revalidatePath('/admin/products')
     return {
@@ -93,7 +94,7 @@ export async function getAllProducts({
   price?: string
   rating?: string
   sort?: string
-}) {
+}): Promise<{ data: Product[]; totalPages: number }> {
   const queryFilter =
     query && query !== 'all' ? ilike(products.name, `%${query}%`) : undefined
   const categoryFilter =
@@ -107,9 +108,9 @@ export async function getAllProducts({
         } <= ${price.split('-')[1]}`
       : undefined
   const order =
-    sort === 'lowest'
+    sort === 'Termurah'
       ? products.price
-      : sort === 'highest'
+      : sort === 'Termahal'
       ? desc(products.price)
       : desc(products.createdAt)
 
@@ -125,6 +126,9 @@ export async function getAllProducts({
       price: products.price,
       isFeatured: products.isFeatured,
       category: categories.name,
+      createdAt: products.createdAt,
+      categoryId: products.categoryId,
+      unit: products.unit,
     })
     .from(products)
     .leftJoin(categories, eq(products.categoryId, categories.id))

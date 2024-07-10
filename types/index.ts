@@ -1,4 +1,4 @@
-import { carts, orderItems, orders, products } from '@/db/schema'
+import { carts, categories, orderItems, orders, products } from '@/db/schema'
 import { InferSelectModel } from 'drizzle-orm'
 import { z } from 'zod'
 import { cartItemSchema, paymentResultSchema } from '@/lib/validator'
@@ -23,3 +23,5 @@ export type Order = InferSelectModel<typeof orders> & {
   }
 }
 export type OrderItem = InferSelectModel<typeof orderItems>
+
+export type Category = InferSelectModel<typeof categories>
